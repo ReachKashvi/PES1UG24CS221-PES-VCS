@@ -201,6 +201,13 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
         return -1;
     }
     
+    // Step 2: Extract parent hash from HEAD if it exists
+    if (head_read(&commit.parent) == 0) {
+        commit.has_parent = 1;
+    } else {
+        commit.has_parent = 0;
+    }
+    
     // Remaining steps will be implemented in subsequent commits
     (void)message; (void)commit_id_out;
     return -1;
