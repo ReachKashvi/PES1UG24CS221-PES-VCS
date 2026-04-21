@@ -130,8 +130,29 @@ int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
 //
 // Returns 0 on success, -1 on error.
 static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID *id_out) {
-    // To be implemented in next commits
-    (void)entries; (void)count; (void)depth; (void)id_out;
+    Tree t;
+    t.count = 0;
+
+    int i = 0;
+    while (i < count) {
+        const char *path = entries[i].path + depth;
+        char *slash = strchr(path, '/');
+        
+        if (slash == NULL) {
+            // It's a file
+            TreeEntry *te = &t.entries[t.count++];
+            te->mode = entries[i].mode;
+            strcpy(te->name, path);
+            te->hash = entries[i].hash;
+            i++;
+        } else {
+            // It's a subdirectory (to be implemented)
+            i++;
+        }
+    }
+
+    // Serialization and storing to be implemented in following commits
+    (void)id_out;
     return -1;
 }
 
