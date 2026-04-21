@@ -202,8 +202,22 @@ int object_read(const ObjectID *id, ObjectType *type_out, void **data_out, size_
         return -1;
     }
 
-    // Header parsing and extraction will be in next commit
-    (void)type_out; (void)data_out; (void)len_out;
+    char *nul = memchr(buf, '\0', size);
+    if (!nul) {
+        free(buf);
+        return -1;
+    }
+
+    if (strncmp((char *)buf, "blob", 4) == 0) *type_out = OBJ_BLOB;
+    else if (strncmp((char *)buf, "tree", 4) == 0) *type_out = OBJ_TREE;
+    else *type_out = OBJ_COMMIT;
+
+    size_t header_len = (nul - (char *)buf) + 1;
+    *len_out = size - header_len;
+
+    *data_out = malloc(*len_out);
+    memcpy(*data_out, buf + header_len, *len_out);
+
     free(buf);
-    return -1;
+    return 0;
 }
