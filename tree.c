@@ -129,47 +129,21 @@ int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
 //   - object_write    : save that binary buffer to the store as OBJ_TREE
 //
 // Returns 0 on success, -1 on error.
+#include "index.h"
+
+// Recursive function to build trees for each directory level
 static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID *id_out) {
-    Tree t;
-    t.count = 0;
-
-    int i = 0;
-    while (i < count) {
-        const char *path = entries[i].path + depth;
-        char *slash = strchr(path, '/');
-        
-        if (slash == NULL) {
-            // It's a file
-            TreeEntry *te = &t.entries[t.count++];
-            te->mode = entries[i].mode;
-            strcpy(te->name, path);
-            te->hash = entries[i].hash;
-            i++;
-        } else {
-            // It's a subdirectory (to be implemented)
-            i++;
-        }
-    }
-
-    // Serialization and storing to be implemented in following commits
-    (void)id_out;
+    Tree tree;
+    tree.count = 0;
+    
+    // Logic will be added in further commits
+    (void)entries; (void)count; (void)depth;
+    
     return -1;
 }
 
 int tree_from_index(ObjectID *id_out) {
-    Index idx;
-    if (index_load(&idx) != 0) return -1;
-
-    if (idx.count == 0) {
-        Tree t;
-        t.count = 0;
-        void *data;
-        size_t len;
-        if (tree_serialize(&t, &data, &len) != 0) return -1;
-        int ret = object_write(OBJ_TREE, data, len, id_out);
-        free(data);
-        return ret;
-    }
-
-    return write_tree_level(idx.entries, idx.count, 0, id_out);
+    // TODO: Implement recursive tree building
+    (void)id_out;
+    return -1;
 }
