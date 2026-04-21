@@ -141,8 +141,16 @@ static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID 
         const char *rel_path = entries[i].path + depth;
         char *slash = strchr(rel_path, '/');
         
-        // Processing will go here
-        i++;
+        if (!slash) {
+            tree.entries[tree.count].mode = entries[i].mode;
+            tree.entries[tree.count].hash = entries[i].hash;
+            strcpy(tree.entries[tree.count].name, rel_path);
+            tree.count++;
+            i++;
+        } else {
+            // Directory processing will go here
+            i++;
+        }
     }
     
     return -1;
