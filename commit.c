@@ -208,7 +208,13 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
         commit.has_parent = 0;
     }
     
+    // Step 3: Fill structure data
+    const char *author_name = pes_author();
+    snprintf(commit.author, sizeof(commit.author), "%s", author_name);
+    commit.timestamp = (uint64_t)time(NULL);
+    snprintf(commit.message, sizeof(commit.message), "%s", message);
+    
     // Remaining steps will be implemented in subsequent commits
-    (void)message; (void)commit_id_out;
+    (void)commit_id_out;
     return -1;
 }
