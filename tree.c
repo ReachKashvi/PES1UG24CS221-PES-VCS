@@ -136,8 +136,14 @@ static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID 
     Tree tree;
     tree.count = 0;
     
-    // Logic will be added in further commits
-    (void)entries; (void)count; (void)depth;
+    int i = 0;
+    while (i < count) {
+        const char *rel_path = entries[i].path + depth;
+        char *slash = strchr(rel_path, '/');
+        
+        // Processing will go here
+        i++;
+    }
     
     return -1;
 }
