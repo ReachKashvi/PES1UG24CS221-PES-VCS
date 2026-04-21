@@ -227,6 +227,10 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
     }
     free(commit_data);
     
-    // Remaining step will be implemented in subsequent commits
-    return -1;
+    // Step 5: Update HEAD pointer
+    if (head_update(commit_id_out) != 0) {
+        return -1;
+    }
+    
+    return 0;
 }
