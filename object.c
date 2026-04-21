@@ -102,9 +102,54 @@ int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out
     char header[64];
     int hlen = sprintf(header, "%s %zu", type_str, len) + 1;
 
-    // Remaining logic will be implemented in next commit
-    (void)data; (void)id_out;
-    return -1;
+    size_t total = hlen + len;
+    unsigned char *buf = malloc(total);
+    if (!buf) return -1;
+
+    memcpy(buf, header, hlen);
+    memcpy(buf + hlen, data, len);
+
+    compute_hash(buf, total, id_out);
+
+    if (object_exists(id_out)) {
+        free(buf);
+        return 0;
+    }
+
+    char path[512];
+    object_path(id_out, path, sizeof(path));
+
+    char dir[512];
+    strncpy(dir, path, sizeof(dir));
+    char *slash = strrchr(dir, '/');
+    if (slash) {
+        *slash = '\0';
+        mkdir(".pes/objects", 0755);
+        mkdir(dir, 0755);
+    }
+
+    char temp[512];
+    snprintf(temp, sizeof(temp), "%s.tmp", path);
+
+    int fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+    if (fd < 0) {
+        free(buf);
+        return -1;
+    }
+
+    if (write(fd, buf, total) != (ssize_t)total) {
+        close(fd);
+        free(buf);
+        return -1;
+    }
+
+    fsync(fd);
+    close(fd);
+
+    rename(temp, path);
+
+    free(buf);
+    return 0;
 }
 
 // Read an object from the store.
