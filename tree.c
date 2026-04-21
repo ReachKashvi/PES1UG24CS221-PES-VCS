@@ -148,8 +148,27 @@ static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID 
             tree.count++;
             i++;
         } else {
-            // Directory processing will go here
-            i++;
+            int dir_len = slash - rel_path;
+            char dir_name[256];
+            strncpy(dir_name, rel_path, dir_len);
+            dir_name[dir_len] = '\0';
+            
+            int j = i;
+            while (j < count) {
+                const char *curr_rel = entries[j].path + depth;
+                if (strncmp(curr_rel, dir_name, dir_len) == 0 && curr_rel[dir_len] == '/') j++;
+                else break;
+            }
+            
+            ObjectID subtree_id;
+            if (write_tree_level(&entries[i], j - i, depth + dir_len + 1, &subtree_id) < 0) return -1;
+            
+            tree.entries[tree.count].mode = 0040000;
+            tree.entries[tree.count].hash = subtree_id;
+            strcpy(tree.entries[tree.count].name, dir_name);
+            tree.count++;
+            
+            i = j;
         }
     }
     
