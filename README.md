@@ -1,3 +1,40 @@
+1A.
+<img width="1569" height="262" alt="1A" src="https://github.com/user-attachments/assets/cd1bcfc7-a438-4655-a265-0817c0c4a5e8" />
+
+1B.
+<img width="1555" height="126" alt="1B" src="https://github.com/user-attachments/assets/79388e2b-ae52-4a61-9131-8ec46fbc3c6c" />
+
+2A.
+<img width="1506" height="365" alt="2A" src="https://github.com/user-attachments/assets/fa93ed33-9a19-4a9d-9643-e273e8326a2c" />
+
+2B.
+<img width="1712" height="357" alt="2B" src="https://github.com/user-attachments/assets/a4e80ed7-cac7-46bd-87b7-8c8cd57ef104" />
+
+3A.
+<img width="1359" height="797" alt="3A" src="https://github.com/user-attachments/assets/3270d645-971f-4bf6-a2dd-9c38998d0b12" />
+
+3B.
+<img width="1523" height="127" alt="3B" src="https://github.com/user-attachments/assets/55b3cd3d-0bd0-4948-a427-9f2ff4735867" />
+
+4A.
+<img width="1702" height="797" alt="4A" src="https://github.com/user-attachments/assets/8a503169-5d40-4489-8b4a-a5bcd788ee95" />
+
+4B.
+<img width="1604" height="462" alt="4B" src="https://github.com/user-attachments/assets/86989191-9c13-47a1-abfc-1867b25daa10" />
+
+4C.
+<img width="1557" height="157" alt="4C" src="https://github.com/user-attachments/assets/f199b2f3-ad13-4bd7-b2c4-b9a721bb46ca" />
+
+Final 1
+<img width="1494" height="964" alt="Final 1" src="https://github.com/user-attachments/assets/60973497-33fb-4dd3-b945-da4ba5b4de02" />
+
+Final 2
+<img width="1131" height="1046" alt="Final 2" src="https://github.com/user-attachments/assets/ee0425ff-1afa-44aa-9e10-8a5f98e111fb" />
+
+Final 3
+<img width="1226" height="527" alt="Final 3" src="https://github.com/user-attachments/assets/6871d3d5-ef9f-47fd-b44d-912cd87b3d5b" />
+
+
 Q5.1 — Implementing pes checkout
 
 To implement pes checkout , the repository must update .pes/HEAD and the branch reference under .pes/refs/heads/. If the checkout is to a normal branch, HEAD should continue pointing to the branch name rather than a raw commit hash. The working directory must then be rewritten so it matches the tree of the target commit: files that no longer exist on the target branch must be removed, files that differ must be replaced, and new files and directories from the target branch must be created.
