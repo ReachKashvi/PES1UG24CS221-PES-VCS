@@ -131,6 +131,12 @@ int tree_serialize(const Tree *tree, void **data_out, size_t *len_out) {
 // Returns 0 on success, -1 on error.
 #include "index.h"
 
+// Weak definition of index_load to fix the missing index.o in Makefile's test_tree target
+__attribute__((weak)) int index_load(Index *index) {
+    (void)index;
+    return -1;
+}
+
 // Recursive function to build trees for each directory level
 static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID *id_out) {
     Tree tree;
