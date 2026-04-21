@@ -232,6 +232,13 @@ int index_add(Index *index, const char *path) {
     }
     free(buf);
     
-    // Remaining metadata gathering and save logic will go in next commits
+    IndexEntry *entry = index_find(index, path);
+    if (!entry) {
+        if (index->count >= MAX_INDEX_ENTRIES) return -1;
+        entry = &index->entries[index->count++];
+        strcpy(entry->path, path);
+    }
+    
+    // Remaining logic
     return -1;
 }
