@@ -239,6 +239,13 @@ int index_add(Index *index, const char *path) {
         strcpy(entry->path, path);
     }
     
-    // Remaining logic
-    return -1;
+    uint32_t mode = 0100644;
+    if (st.st_mode & S_IXUSR) mode = 0100755;
+    
+    entry->mode = mode;
+    entry->hash = hash;
+    entry->mtime_sec = st.st_mtime;
+    entry->size = st.st_size;
+    
+    return index_save(index);
 }
