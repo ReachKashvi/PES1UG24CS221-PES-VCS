@@ -94,10 +94,10 @@ int object_exists(const ObjectID *id) {
 //
 // Returns 0 on success, -1 on error.
 int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out) {
-    char type_str[16];
-    if (type == OBJ_BLOB) strcpy(type_str, "blob");
-    else if (type == OBJ_TREE) strcpy(type_str, "tree");
-    else strcpy(type_str, "commit");
+    const char *type_str;
+    if (type == OBJ_BLOB) type_str = "blob";
+    else if (type == OBJ_TREE) type_str = "tree";
+    else type_str = "commit";
 
     char header[64];
     int hlen = sprintf(header, "%s %zu", type_str, len) + 1;
