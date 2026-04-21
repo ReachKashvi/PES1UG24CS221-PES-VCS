@@ -214,7 +214,19 @@ int commit_create(const char *message, ObjectID *commit_id_out) {
     commit.timestamp = (uint64_t)time(NULL);
     snprintf(commit.message, sizeof(commit.message), "%s", message);
     
-    // Remaining steps will be implemented in subsequent commits
-    (void)commit_id_out;
+    // Step 4: Serialize and write to storage
+    void *commit_data;
+    size_t commit_len;
+    if (commit_serialize(&commit, &commit_data, &commit_len) != 0) {
+        return -1;
+    }
+    
+    if (object_write(OBJ_COMMIT, commit_data, commit_len, commit_id_out) != 0) {
+        free(commit_data);
+        return -1;
+    }
+    free(commit_data);
+    
+    // Remaining step will be implemented in subsequent commits
     return -1;
 }
