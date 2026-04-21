@@ -172,11 +172,23 @@ static int write_tree_level(IndexEntry *entries, int count, int depth, ObjectID 
         }
     }
     
-    return -1;
+    void *data;
+    size_t len;
+    if (tree_serialize(&tree, &data, &len) < 0) return -1;
+    
+    int ret = object_write(OBJ_TREE, data, len, id_out);
+    free(data);
+    return ret;
 }
 
 int tree_from_index(ObjectID *id_out) {
-    // TODO: Implement recursive tree building
-    (void)id_out;
-    return -1;
+    Index index;
+    if (index_load(&index) < 0) return -1;
+    
+    if (index.count == 0) {
+        // Technically an empty tree, but let's handle graceful empty state.
+        // Actually, creating an empty tree object is standard Git behavior!
+    }
+    
+    return write_tree_level(index.entries, index.count, 0, id_out);
 }
